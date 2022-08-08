@@ -1,0 +1,85 @@
+spring:
+  cloud:
+    stream:
+      kafka:
+        streams:
+          binder:
+            functions:
+#              processOne.applicationId: processOne
+#              processTwo.applicationId: processTwo
+#              functionProcessOne.applicationId: functionProcessOne
+              moreFunction.applicationId: moreFunction
+              functionProcessThree.applicationId: functionProcessThree
+            configuration:
+#              default:
+#                key:
+#                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+#                value:
+#                  serde: org.springframework.kafka.support.serializer.JsonSerde
+              num:
+                stream:
+                  threads: 5
+            brokers: 127.0.0.1:9092
+            auto-create-topics: true
+      bindings:
+        productPerson-out-0: # 对用在ProducersConfig中的生产函数logP
+          destination: person3  # logP将数据发送的topic
+          contentType: application/json
+        productAccount-out-0:     # 对用在ProducersConfig中的生产函数logP
+          destination: account3  # logP将数据发送的topic
+          contentType: application/json
+        productOrder-out-0:    # 对用在ProducersConfig中的生产函数logP
+          destination: order6  # logP将数据发送的topic
+          contentType: application/json
+        consumerPerson-in-0:    # 对用在ConsumersConfig中的生产函数logC
+          destination: person3
+          group: consumerPerson
+        consumerAccount-in-0:
+          destination: account3
+          group: consumerAccount
+        consumerOrder-in-0:
+          destination: order6
+          group: consumerOrder
+        consumerOutput-in-0:
+          destination: output
+          group: consumerOutput
+        consumerOutput2-in-0:
+          destination: output3
+          group: consumerOutput2
+#        processOne-in-0:
+#          destination: account
+#          group: processOne
+#        processOne-in-1:
+#          destination: person
+#          group: processOne
+#        processTwo-in-0:
+#          destination: person
+#          group: processTwo
+#        consumerTestOne-in-0:
+#          destination: account
+#          group: consumerTestOne
+#        consumerTestTwo-in-0:
+#          destination: person
+#          group: consumerTestTwo
+        functionProcessOne-in-0:
+          destination: order3
+          group: functionProcessOne
+        functionProcessOne-out-0:
+          destination: person3
+          contentType: application/json
+        moreFunction-in-0:
+          destination: order3
+          group: moreFunction
+        moreFunction-in-1:
+          destination: person3
+          group: moreFunction
+        moreFunction-out-0:
+          destination: account3
+        functionProcessThree-in-0:
+          destination: order6
+        functionProcessThree-out-0:
+          destination: order7
+          contentType: application/json
+      function:
+        definition: productPerson;consumerPerson;consumerAccount;productAccount;productOrder;consumerOrder;moreFunction;functionProcessOne;consumerOutput;consumerOutput2;functionProcessThree
+#        definition: productPerson;consumerPerson;consumerAccount;processOne;processTwo;productAccount;consumerTestOne;consumerTestTwo;productOrder;functionProcessOne;consumerOrder;moreFunction
